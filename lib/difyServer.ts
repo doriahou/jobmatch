@@ -267,12 +267,13 @@ export async function serverRunInterview(
 
   // Ensure each question has required fields
   const normalizedQuestions: InterviewQuestion[] = questions.map((q) => {
-    const item = q as Record<string, unknown>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const item = q as any;
     return {
       category: String(item.category ?? item.type ?? item.kind ?? "其他"),
       question: String(item.question ?? item.content ?? item.text ?? item.q ?? ""),
       hint: item.hint != null ? String(item.hint) : undefined,
-    };
+    } satisfies InterviewQuestion;
   }).filter((q) => q.question);
 
   return {
